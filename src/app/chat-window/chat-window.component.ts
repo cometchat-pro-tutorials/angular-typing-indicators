@@ -8,16 +8,13 @@ import { scan } from 'rxjs/operators';
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss']
 })
-export class ChatWindowComponent implements OnInit {
+export class ChatWindowComponent {
 
+  public typingIndicator: Observable<boolean> = this.chatService.getTypingIndicator();
 
   public messages: Observable<string[]> = this.chatService.getMessages().pipe(
     scan<string>((acc, curr) => [...acc, curr], [])
   );
 
   constructor(private chatService: CometChatService) {}
-
-  ngOnInit() {
-  }
-
 }

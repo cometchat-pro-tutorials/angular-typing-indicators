@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CometChatService } from '../comet-chat.service';
+import { tap, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-message-box',
@@ -18,10 +19,17 @@ export class MessageBoxComponent implements OnInit {
   public send():void {
     
     console.log(this.messageForm.value['message']);
+
     this.chatService.sendMessage(this.messageForm.value['message']);
     this.messageForm.reset();
   }
+
   ngOnInit() {
+    this.messageForm.valueChanges.pipe(
+      tap(() => this.chatService.startTyping()),
+      delay(3000),
+      tap(() => this.chatService.endTyping())
+    ).subscribe();
   }
 
 }

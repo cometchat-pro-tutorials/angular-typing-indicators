@@ -1,1 +1,4 @@
-<p *ngFor="let message of messages | async">{{message}}</p>
+<div>
+    <p *ngFor="let message of messages | async">{{message}}</p>
+</div>
+<img *ngIf="typingIndicator | async" src="" />
