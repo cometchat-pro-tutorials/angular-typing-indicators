@@ -1,0 +1,76 @@
+:host {
+    height: 390px;
+    display: block;
+    padding: 15px 15px 0;
+}
+
+div.conversation {
+  overflow: auto;
+    height: 355px;
+    div {
+      display: flex;
+      flex-direction: row;
+    }
+
+    p {
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .internal p {
+      background: blue;
+      color: white;
+    }
+
+    .external p {
+      background: #eeeeee;
+    }
+
+    .external {
+      flex-direction: row-reverse;
+    }
+}
+
+img {
+    height: 50px;
+}
+
+div.typingIndicator {
+    height: 35px;
+}
+
+
+.container {
+    background-color: #E6E7ED;
+    padding: 10px 15px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  
+  .dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 100%;
+    display: inline-block;
+    background-color: #B4B5B9;
+    animation: 1.2s typing-dot ease-in-out infinite;
+  }
+  
+  .dot:nth-of-type(2) {
+    animation-delay: 0.15s;
+  }
+  
+  .dot:nth-of-type(3) {
+    animation-delay: 0.25s;
+  }
+  
+  @keyframes typing-dot {
+    15% {
+      transform: translateY(-35%);
+      opacity: 0.5;
+    }
+    30% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }

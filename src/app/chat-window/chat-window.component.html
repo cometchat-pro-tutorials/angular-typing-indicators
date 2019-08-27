@@ -1,4 +1,15 @@
-<div>
-    <p *ngFor="let message of messages | async">{{message}}</p>
+<div class="conversation">
+    <div *ngFor="let message of messages | async" [ngClass]="{'external': message.arrived, 'internal': !message.arrived}">
+            <img [src]=message.image />
+            <p>{{message.message}}</p>
+        </div>
 </div>
-<img *ngIf="typingIndicator | async" src="" />
+<div class="typingIndicator">
+        <span *ngIf="typingIndicator | async">{{who | async}} is typing
+                <div class="container">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                </div>
+        </span>
+</div>

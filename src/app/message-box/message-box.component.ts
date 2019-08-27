@@ -17,10 +17,8 @@ export class MessageBoxComponent implements OnInit {
   constructor(private chatService: CometChatService) { }
 
   public send():void {
-    
-    console.log(this.messageForm.value['message']);
-
     this.chatService.sendMessage(this.messageForm.value['message']);
+    this.chatService.endTyping();
     this.messageForm.reset();
   }
 
