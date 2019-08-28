@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CometChat } from "@cometchat-pro/chat"
 import { environment } from 'src/environments/environment';
-import { Observable, ReplaySubject, Subject, from, BehaviorSubject } from 'rxjs';
-import { filter, flatMap, tap } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject, from, BehaviorSubject, timer } from 'rxjs';
+import { filter, flatMap, tap, debounce } from 'rxjs/operators';
 
 @Injectable({
  providedIn: 'root'

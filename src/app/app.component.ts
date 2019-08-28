@@ -8,14 +8,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'comet-chat';
-  public loggedIn: Observable<string>;
+  public loggedIn: Observable<string> = this.chatService.getSignedIn();
 
   constructor(private chatService: CometChatService) {}
-
-  public ngOnInit(): void {
-    this.loggedIn = this.chatService.getSignedIn();
-  }
 
   public switchHero(): void {
     this.chatService.switchHero();

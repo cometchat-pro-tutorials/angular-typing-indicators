@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CometChatService } from '../comet-chat.service';
 import { Observable } from 'rxjs';
 import { scan, map } from 'rxjs/operators';
@@ -17,8 +17,5 @@ export class ChatWindowComponent {
     scan<string>((acc, curr) => [...acc, curr], [])
   );
 
-  constructor(private chatService: CometChatService) {
-    this.chatService.getTypingIndicator().subscribe(console.log);
-
-  }
+  constructor(private chatService: CometChatService) {}
 }
