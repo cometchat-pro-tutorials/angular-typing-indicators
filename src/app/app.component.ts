@@ -11,8 +11,4 @@ export class AppComponent {
   public loggedIn: Observable<string> = this.chatService.getSignedIn();
 
   constructor(private chatService: CometChatService) {}
-
-  public switchHero(): void {
-    this.chatService.switchHero();
-  }
 }

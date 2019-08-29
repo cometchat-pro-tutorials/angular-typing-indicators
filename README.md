@@ -28,9 +28,11 @@ To run the demo follow these steps:
 7. Update [environment.ts](https://github.com/cometchat-pro-tutorials/angular-typing-indicators/blob/master/src/environments/environment.ts) with your newly-created `appID` and `apiKey`
 8. Install project dependencies by typing: `npm install`
 9. Launch application with: `npm start`
-10. Navigate to http://localhost:4200
-11. Open another browser window; navigate to http://localhost:4200 and click 'switch hero' link on the top
-12. Start typing!
+10. Navigate to http://localhost:4200 and type 'superhero1' in the prompt
+11. Open another browser window; navigate to http://localhost:4200 and type 'superhero2' in the prompt
+12. You can login up to 4 users (superhero1, superhero2, superhero3, superhero4)
+13. Start typing!
+
 
 Questions about running the demo? [Open an issue](https://github.com/cometchat-pro-tutorials/angular-typing-indicators/issues). We're here to help ✌️
 

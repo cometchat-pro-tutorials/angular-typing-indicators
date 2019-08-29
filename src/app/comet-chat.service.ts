@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CometChat } from "@cometchat-pro/chat"
 import { environment } from 'src/environments/environment';
-import { Observable, ReplaySubject, Subject, from } from 'rxjs';
+import { Observable, ReplaySubject, Subject, from, BehaviorSubject } from 'rxjs';
 import { filter, flatMap, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -10,12 +10,11 @@ import { filter, flatMap, tap } from 'rxjs/operators';
 
 export class CometChatService {
  private initialized: Subject<boolean> = new ReplaySubject();
- private signedIn: string;
  private signedIn$: Subject<string> = new ReplaySubject();
-  private isSomeoneTyping$: Subject<any> = new ReplaySubject();
-  private isTyping: boolean;
  private messages$: Subject<any> = new ReplaySubject();
  private actualImage: string;
+ private whoIsTypingArr: string[] = [];
+ private whoIsTyping$: Subject<string[]> = new BehaviorSubject([]);
 
  constructor() {
    CometChat.init(environment.appId).then(_ => {
@@ -26,26 +25,30 @@ export class CometChatService {
    });
 
    this.initialized.pipe(filter(val => val)).subscribe(() => {
-        this.login('superhero1').subscribe(loggedIn => this.actualImage = loggedIn.avatar);
+     let uid = prompt("select hero");
+        this.login(uid).subscribe(loggedIn => this.actualImage = loggedIn.avatar);
    });
   }
 
  public login(uid: string): Observable<any> {
    uid = uid.toLowerCase();
    return this.initialized.pipe(filter(v => v), flatMap(() => {
-     return from(CometChat.login(uid, environment.apiKey)).pipe(tap((loggedIn) => {
-       this.signedIn = uid;
-       this.signedIn$.next(this.signedIn);
+     return from(CometChat.login(uid, environment.apiKey)).pipe(tap(() => {
+       this.signedIn$.next(uid);
 
        CometChat.addMessageListener('messageListener', new CometChat.MessageListener({
          onTextMessageReceived: message => {
-           console.log(message);
            this.messages$.next({image: message.sender.avatar, message: message.text, arrived:true});
          },
-         onTypingStarted: (who) => {console.log(who); this.isSomeoneTyping$.next({who: who.sender.name, typing: true})},
-         onTypingEnded: (who) => {console.log(who); this.isSomeoneTyping$.next(({who: who.sender.name, typing: false}))}
+         onTypingStarted: (who) => {
+           this.whoIsTypingArr.push(who.sender.name);
+           this.whoIsTyping$.next(this.whoIsTypingArr);
+          },
+         onTypingEnded: (who) => {
+           this.whoIsTypingArr.splice(this.whoIsTypingArr.findIndex(val => val === who.sender.name), 1);
+           this.whoIsTyping$.next(this.whoIsTypingArr);
+          }
        }));
-
      }));
    }));
   } 
@@ -54,18 +57,10 @@ export class CometChatService {
    return this.signedIn$;
  }
 
- public switchHero(): void {
-   if (this.signedIn == 'superhero1') {
-    this.login('superhero2').subscribe(loggedIn => this.actualImage = loggedIn.avatar);
-   } else {
-     this.login('superhero1').subscribe(loggedIn => this.actualImage = loggedIn.avatar);
-   }
- }
-
  public sendMessage(content: string): void {
   this.messages$.next({image: this.actualImage, message: content, arrived: false});
    
-  let message = new CometChat.TextMessage(this.getReceiver(), content, CometChat.MESSAGE_TYPE.TEXT, CometChat.RECEIVER_TYPE.USER);
+  let message = new CometChat.TextMessage('supergroup', content, CometChat.MESSAGE_TYPE.TEXT, CometChat.RECEIVER_TYPE.GROUP);
 
    CometChat.sendMessage(message).catch(console.log);
  }
@@ -74,19 +69,15 @@ export class CometChatService {
    return this.messages$;
  }
 
- private getReceiver(): string {
-  return this.signedIn == 'superhero1'?'superhero2':'superhero1';
- }
-
  public startTyping(): void {
-  CometChat.startTyping(new CometChat.TypingIndicator(this.getReceiver(), CometChat.RECEIVER_TYPE.USER, {}));
+  CometChat.startTyping(new CometChat.TypingIndicator('supergroup', CometChat.RECEIVER_TYPE.GROUP, {}));
  }
 
  public endTyping(): void {
-  CometChat.endTyping(new CometChat.TypingIndicator(this.getReceiver(), CometChat.RECEIVER_TYPE.USER, {}));
+  CometChat.endTyping(new CometChat.TypingIndicator('supergroup', CometChat.RECEIVER_TYPE.GROUP, {}));
  }
 
  public getTypingIndicator(): Observable<any> {
-   return this.isSomeoneTyping$;
+   return this.whoIsTyping$;
  }
 }
