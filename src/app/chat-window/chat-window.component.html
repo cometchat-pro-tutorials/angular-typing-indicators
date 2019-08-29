@@ -1,7 +1,7 @@
 <div class="conversation">
     <div *ngFor="let message of messages | async" [ngClass]="{'external': message.arrived, 'internal': !message.arrived}">
             <img [src]=message.image />
-            <p>{{message.message}}</p>
+            <p><span *ngIf="message.name">{{message.name}}</span>{{message.message}}</p>
         </div>
 </div>
 <div class="typingIndicator">

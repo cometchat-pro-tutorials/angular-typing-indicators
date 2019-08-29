@@ -16,6 +16,12 @@ div.conversation {
     }
 
     p {
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 12px;
+        color: blue;
+      }
       padding: 10px;
       border-radius: 10px;
       box-shadow: 1px 1px 5px #cccccc;
