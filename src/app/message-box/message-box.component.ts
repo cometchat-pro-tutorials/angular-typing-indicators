@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CometChatService } from '../comet-chat.service';
-import { tap, delay, debounce, debounceTime } from 'rxjs/operators';
-import { timer } from 'rxjs';
+import { tap, debounceTime } from 'rxjs/operators';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-message-box',
@@ -12,8 +12,10 @@ import { timer } from 'rxjs';
 export class MessageBoxComponent implements OnInit {
 
   public messageForm = new FormGroup({
-    message: new FormControl('', Validators.required)
+    message: new FormControl('Type something', Validators.required)
   });
+
+  public touched: Subject<boolean> = new BehaviorSubject(false);
 
   constructor(private chatService: CometChatService) { }
 
@@ -23,7 +25,15 @@ export class MessageBoxComponent implements OnInit {
     this.messageForm.reset();
   }
 
+  public onFocus(): void {
+    if(this.messageForm.controls['message'].value === 'Type something') {
+      this.touched.next(true);
+      this.messageForm.reset();
+    }
+  }
+
   ngOnInit() {
+    console.log(this.messageForm.touched);
     this.messageForm.valueChanges.pipe(
       tap(() => this.chatService.startTyping()),
       debounceTime(1500),

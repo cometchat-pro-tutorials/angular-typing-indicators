@@ -1,3 +1,3 @@
 <form [formGroup]="messageForm" (ngSubmit)="send()">
-    <input type="text" formControlName="message" />
+    <input [ngClass]="{'inactive': !(touched | async)}" type="text" formControlName="message" (focus)="onFocus()" />
 </form>
