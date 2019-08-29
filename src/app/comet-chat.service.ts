@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CometChat } from "@cometchat-pro/chat"
 import { environment } from 'src/environments/environment';
-import { Observable, ReplaySubject, Subject, from, BehaviorSubject, timer } from 'rxjs';
-import { filter, flatMap, tap, debounce } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject, from } from 'rxjs';
+import { filter, flatMap, tap } from 'rxjs/operators';
 
 @Injectable({
  providedIn: 'root'
@@ -42,8 +42,8 @@ export class CometChatService {
            console.log(message);
            this.messages$.next({image: message.sender.avatar, message: message.text, arrived:true});
          },
-         onTypingStarted: (who) => this.isSomeoneTyping$.next({who: who.sender.name, typing: true}),
-         onTypingEnded: (who) => this.isSomeoneTyping$.next(({who: who.sender.name, typing: false}))
+         onTypingStarted: (who) => {console.log(who); this.isSomeoneTyping$.next({who: who.sender.name, typing: true})},
+         onTypingEnded: (who) => {console.log(who); this.isSomeoneTyping$.next(({who: who.sender.name, typing: false}))}
        }));
 
      }));
@@ -79,16 +79,10 @@ export class CometChatService {
  }
 
  public startTyping(): void {
-   if (this.isTyping)
-    return;
-   this.isTyping = true;
   CometChat.startTyping(new CometChat.TypingIndicator(this.getReceiver(), CometChat.RECEIVER_TYPE.USER, {}));
  }
 
  public endTyping(): void {
-   if (!this.isTyping)
-    return;
-    this.isTyping = false;
   CometChat.endTyping(new CometChat.TypingIndicator(this.getReceiver(), CometChat.RECEIVER_TYPE.USER, {}));
  }
 

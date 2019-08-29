@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CometChatService } from '../comet-chat.service';
-import { tap, debounceTime } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -33,11 +33,8 @@ export class MessageBoxComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.messageForm.touched);
     this.messageForm.valueChanges.pipe(
       tap(() => this.chatService.startTyping()),
-      debounceTime(1500),
-      tap(() =>  this.chatService.endTyping())
     ).subscribe();
   }
 
