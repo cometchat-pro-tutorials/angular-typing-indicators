@@ -41,10 +41,13 @@ export class CometChatService {
            this.messages$.next({name: message.sender.name, image: message.sender.avatar, message: message.text, arrived:true});
          },
          onTypingStarted: (who) => {
+           if(this.whoIsTypingArr.indexOf(who.sender.name) > -1)
+            return;
            this.whoIsTypingArr.push(who.sender.name);
            this.whoIsTyping$.next(this.whoIsTypingArr);
           },
          onTypingEnded: (who) => {
+          //  console.log(who);
            this.whoIsTypingArr.splice(this.whoIsTypingArr.findIndex(val => val === who.sender.name), 1);
            this.whoIsTyping$.next(this.whoIsTypingArr);
           }
