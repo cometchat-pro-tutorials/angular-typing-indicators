@@ -10,15 +10,21 @@ a {
 :host {
     margin: 0 auto;
     background: white;
-    width: 600px;
+    width: calc(100% - 20px);
     height: 500px;
+    max-width: 680px;
     display: block;
-    border-radius: 10px;
-    box-shadow: 5px 5px 30px black;
+    border-radius: 6px;
 }
 
 div {
-    padding: 15px;
-    color: #999999;
-    border-radius: 10px 10px 0 0;
+    padding: 0 28px;
+    font-size: 15px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    height: 61px;
+    color: #2D313F;
+    border-radius: 6px 6px 0 0;
+    background: #FFFFFE;
 }
