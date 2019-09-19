@@ -38,7 +38,7 @@ export class CometChatService {
 
        CometChat.addMessageListener('messageListener', new CometChat.MessageListener({
          onTextMessageReceived: message => {
-           this.messages$.next({name: message.sender.name, image: message.sender.avatar, message: message.text, arrived:true});
+           this.messages$.next({name: message.sender.name, image: message.sender.avatar, message: message.text, arrived: uid !== message.sender.uid});
          },
          onTypingStarted: (who) => {
            if(this.whoIsTypingArr.indexOf(who.sender.name) > -1)

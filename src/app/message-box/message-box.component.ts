@@ -12,7 +12,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 export class MessageBoxComponent implements OnInit {
 
   public messageForm = new FormGroup({
-    message: new FormControl('Type something', Validators.required)
+    message: new FormControl('', Validators.required)
   });
 
   public touched: Subject<boolean> = new BehaviorSubject(false);
