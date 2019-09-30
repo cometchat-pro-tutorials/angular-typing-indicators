@@ -15,6 +15,7 @@ export class CometChatService {
  private actualImage: string;
  private whoIsTypingArr: string[] = [];
  private whoIsTyping$: Subject<string[]> = new BehaviorSubject([]);
+ private _signedIn: boolean = false;
 
  constructor() {
    CometChat.init(environment.appId).then(_ => {
@@ -24,10 +25,10 @@ export class CometChatService {
      console.log('Initialization error: ' + error);
    });
 
-   this.initialized.pipe(filter(val => val)).subscribe(() => {
-     let uid = prompt("select hero");
-        this.login(uid).subscribe(loggedIn => this.actualImage = loggedIn.avatar);
-   });
+  //  this.initialized.pipe(filter(val => val)).subscribe(() => {
+  //    let uid = prompt("select hero");
+  //       this.login(uid).subscribe(loggedIn => this.actualImage = loggedIn.avatar);
+  //  });
   }
 
  public login(uid: string): Observable<any> {
@@ -35,6 +36,7 @@ export class CometChatService {
    return this.initialized.pipe(filter(v => v), flatMap(() => {
      return from(CometChat.login(uid, environment.apiKey)).pipe(tap(() => {
        this.signedIn$.next(uid);
+       this._signedIn = true;
 
        CometChat.addMessageListener('messageListener', new CometChat.MessageListener({
          onTextMessageReceived: message => {
@@ -58,6 +60,10 @@ export class CometChatService {
 
  public getSignedIn(): Observable<string> {
    return this.signedIn$;
+ }
+
+ public isSignedIn(): boolean {
+  return this._signedIn;
  }
 
  public sendMessage(content: string): void {

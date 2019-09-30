@@ -1,0 +1,8 @@
+
+<h1>Welcome Back</h1>
+
+<p>To access this demo, you can use one of the following four users: superhero1, superhero2, superhero3, or superhero4</p>
+<form [formGroup]="loginForm" (ngSubmit)="signIn()">
+    <input type="text" formControlName="uid" placeholder="Username" />
+    <button type="submit" [disabled]="!loginForm.valid">Log In</button>
+</form>

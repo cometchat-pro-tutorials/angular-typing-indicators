@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public loggedIn: Observable<string> = this.chatService.getSignedIn();
+  // public loggedIn: Observable<string> = this.chatService.getSignedIn();
 
-  constructor(private chatService: CometChatService) {}
+  // constructor(private chatService: CometChatService) {}
 }
