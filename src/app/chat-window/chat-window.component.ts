@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CometChatService } from '../comet-chat.service';
 import { Observable } from 'rxjs';
-import { scan, map, filter } from 'rxjs/operators';
+import { scan, map, filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-window',
@@ -19,9 +19,19 @@ export class ChatWindowComponent {
     }
   }));
 
-  public messages: Observable<string[]> = this.chatService.getMessages().pipe(
-    scan<string>((acc, curr) => [...acc, curr], [])
+  public messages: Observable<any[]> = this.chatService.getMessages().pipe(
+    scan<any>((acc, curr) => [...acc, curr], [])
   );
 
-  constructor(private chatService: CometChatService) {}
+  @ViewChild('conversation', { static: true })
+  private conversationContainer: ElementRef;
+
+  constructor(private chatService: CometChatService) {
+  }
+
+  public ngOnInit(): void {
+    this.messages.pipe(tap(() => {
+      this.conversationContainer.nativeElement.scrollTop = this.conversationContainer.nativeElement.scrollHeight;
+    })).subscribe();
+  }
 }

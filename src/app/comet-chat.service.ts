@@ -24,11 +24,6 @@ export class CometChatService {
    }, error => {
      console.log('Initialization error: ' + error);
    });
-
-  //  this.initialized.pipe(filter(val => val)).subscribe(() => {
-  //    let uid = prompt("select hero");
-  //       this.login(uid).subscribe(loggedIn => this.actualImage = loggedIn.avatar);
-  //  });
   }
 
  public login(uid: string): Observable<any> {
@@ -75,7 +70,7 @@ export class CometChatService {
    CometChat.sendMessage(message).catch(console.log);
  }
 
- public getMessages(): Observable<string> {
+ public getMessages(): Observable<any> {
    return this.messages$;
  }
 
