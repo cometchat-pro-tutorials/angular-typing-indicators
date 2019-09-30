@@ -34,9 +34,10 @@ export class CometChatService {
  public login(uid: string): Observable<any> {
    uid = uid.toLowerCase();
    return this.initialized.pipe(filter(v => v), flatMap(() => {
-     return from(CometChat.login(uid, environment.apiKey)).pipe(tap(() => {
+     return from(CometChat.login(uid, environment.apiKey)).pipe(tap((user: any) => {
        this.signedIn$.next(uid);
        this._signedIn = true;
+       this.actualImage = user.avatar;
 
        CometChat.addMessageListener('messageListener', new CometChat.MessageListener({
          onTextMessageReceived: message => {
